@@ -129,8 +129,6 @@ public class StudentManagementSystem {
             System.out.println("Student not found.");
         }
     }
-
-    // 🔹 Helper method to find student by ID
     public static Student findStudentById(int id) {
         for (Student s : studentList) {
             if (s.getId() == id) {
