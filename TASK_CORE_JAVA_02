@@ -1,0 +1,150 @@
+package task1.com;
+import java.util.*;
+
+class Ticket {
+    private int ticketId;
+    private String passengerName;
+    private String source;
+    private String destination;
+    private String travelDate;
+
+    public Ticket(int ticketId, String passengerName, String source, String destination, String travelDate) {
+        this.ticketId = ticketId;
+        this.passengerName = passengerName;
+        this.source = source;
+        this.destination = destination;
+        this.travelDate = travelDate;
+    }
+
+    public int getTicketId() {
+        return ticketId;
+    }
+
+    public void setPassengerName(String passengerName) {
+        this.passengerName = passengerName;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public void setTravelDate(String travelDate) {
+        this.travelDate = travelDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket ID: " + ticketId +
+                ", Name: " + passengerName +
+                ", From: " + source +
+                ", To: " + destination +
+                ", Date: " + travelDate;
+    }
+}
+
+public class TicketManagementSystem {
+    private static final Map<Integer, Ticket> ticketMap = new HashMap<>();
+    private static final Scanner d = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int choice;
+        do {
+            System.out.println("\n--- Train Ticket Management System ---");
+            System.out.println("1. Book Ticket");
+            System.out.println("2. View Ticket by ID");
+            System.out.println("3. View All Tickets");
+            System.out.println("4. Update Ticket");
+            System.out.println("5. Cancel Ticket");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+            choice = d.nextInt();
+            d.nextLine();
+
+            switch (choice) {
+                case 1 -> bookTicket();
+                case 2 -> viewTicketById();
+                case 3 -> viewAllTickets();
+                case 4 -> updateTicket();
+                case 5 -> cancelTicket();
+                case 6 -> System.out.println("Exiting the system...");
+                default -> System.out.println("Invalid choice. Try again.");
+            }
+        } while (choice != 6);
+    }
+
+
+    public static void bookTicket() {
+        System.out.print("Enter Ticket ID: ");
+        int id = d.nextInt();
+        d.nextLine();
+        if (ticketMap.containsKey(id)) {
+            System.out.println("Ticket ID already exists. Try another.");
+            return;
+        }
+
+        System.out.print("Enter Passenger Name: ");
+        String name = d.nextLine();
+        System.out.print("Enter Source: ");
+        String source = d.nextLine();
+        System.out.print("Enter Destination: ");
+        String destination = d.nextLine();
+        System.out.print("Enter Travel Date (YYYY-MM-DD): ");
+        String date = d.nextLine();
+        Ticket ticket = new Ticket(id, name, source, destination, date);
+        ticketMap.put(id, ticket);
+        System.out.println("Ticket booked successfully.");
+    }
+    public static void viewTicketById() {
+        System.out.print("Enter Ticket ID: ");
+        int id = d.nextInt();
+        Ticket ticket = ticketMap.get(id);
+        if (ticket != null) {
+            System.out.println(ticket);
+        } else {
+            System.out.println("Ticket not found.");
+        }
+    }
+    public static void viewAllTickets() {
+        if (ticketMap.isEmpty()) {
+            System.out.println("No tickets booked.");
+        } else {
+            for (Ticket ticket : ticketMap.values()) {
+                System.out.println(ticket);
+            }
+        }
+    }
+    public static void updateTicket() {
+        System.out.print("Enter Ticket ID to update: ");
+        int id = d.nextInt();
+        d.nextLine();
+        Ticket ticket = ticketMap.get(id);
+        if (ticket != null) {
+            System.out.print("Enter New Passenger Name: ");
+            ticket.setPassengerName(d.nextLine());
+            System.out.print("Enter New Source: ");
+            ticket.setSource(d.nextLine());
+            System.out.print("Enter New Destination: ");
+            ticket.setDestination(d.nextLine());
+            System.out.print("Enter New Travel Date (YYYY-MM-DD): ");
+            ticket.setTravelDate(d.nextLine());
+            System.out.println("Ticket updated successfully.");
+        } else {
+            System.out.println("Ticket not found.");
+        }
+    }
+    public static void cancelTicket() {
+        System.out.print("Enter Ticket ID to cancel: ");
+        int id = d.nextInt();
+        if (ticketMap.containsKey(id)) {
+            ticketMap.remove(id);
+            System.out.println("Ticket cancelled successfully.");
+        } else {
+            System.out.println("Ticket not found.");
+        }
+    }
+}
+
